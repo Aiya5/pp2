@@ -126,7 +126,7 @@ thisset = {"apple", "banana", "cherry"}
 
 del thisset
 
-print(thisset)
+#print(thisset)
 #------------------------------------------------------------------------------------------
 #Loop sets
 thisset = {"apple", "banana", "cherry"}
