@@ -45,12 +45,12 @@ print(snake_to_camel(text))
 
 #Split a string at uppercase letters---------------------------------------------------------------------------
 text = "SplitAStringAtUppercaseLetters"
-parts = re.findall(r'[A-Z][^A-Z]*', text)
+parts = re.findall(r'[A-Z][a-z]*', text)
 print(parts)
 
 #Insert spaces between words starting with capital letters-----------------------------------------------------------
 text = "InsertSpacesBetweenWordsStartingWithCapitalLetters"
-result = re.sub(r"([a-z])([A-Z])", r"\1 \2", text)
+result = re.sub("([a-z])([A-Z])", r"\1 \2", text)
 print(result)
 
 #Convert a given camel case string to snake case--------------------------------------------------------------------
