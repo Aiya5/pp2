@@ -60,7 +60,7 @@ else:
     print("No file")
 
 #---------------------------------------------------------------------------------------
-path = input("something to delete")
+path = input("something to delete ")
 if not os.path.exists(path):
     print("no such file")
 elif not os.access(path, os.W_OK):
