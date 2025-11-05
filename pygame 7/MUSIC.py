@@ -1,4 +1,3 @@
-import time
 import pygame as pg
 pg.init()
 
@@ -8,9 +7,11 @@ twicePath = "C:/Users/Гульжан/Desktop/pp2/pygame 7/songs/TwiceStrategy.mp
 sc = pg.display.set_mode((720, 711))
 pg.display.set_caption("slayyy")
 clock = pg.time.Clock()
+
 olivia = pg.mixer.music.load(oliviaPath)
 sabrina = pg.mixer.music.load(sabrinaPath)
 twice = pg.mixer.music.load(twicePath)
+
 musicList = [twicePath, sabrinaPath, oliviaPath]
 pg.mixer.music.play(-1)
 penguin = pg.image.load("C:/Users/Гульжан/Desktop/pp2/pygame 7/penguin.jpg")
@@ -44,3 +45,4 @@ while run:
 
     pg.display.flip()
     clock.tick(60)
+pg.quit()

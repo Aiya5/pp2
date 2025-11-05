@@ -17,6 +17,11 @@ pygame.display.set_caption('Snake')  #название в уголке вкла�
 game_window = pygame.display.set_mode((x, y)) #размеры параметры окошко
 fps = pygame.time.Clock() #время обновления фпс
 
+# добавляем музыку для змейки
+pygame.mixer.music.load("snakessong.mp3")  # положи файл snake_music.mp3 в папку
+pygame.mixer.music.play(-1)  # играет бесконечно
+pygame.mixer.music.set_volume(0.3)  # громкость
+
 snake_position = [100, 50] #позиция северуса
 snake_body = [[100, 50],
               [90, 50],
