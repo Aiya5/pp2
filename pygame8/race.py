@@ -96,7 +96,7 @@ C1 = Coin()
 E1=Enemy()
 P1=Player()
  
-#Creating Sprites Groups
+#созданиее груп для обьектов
 enemies = pygame.sprite.Group()
 enemies.add(E1)
 
@@ -108,17 +108,16 @@ all_sprites.add(P1)
 all_sprites.add(E1)
 all_sprites.add(C1)
  
-#Adding a new User event 
+#ивенты для обьектов их движение
 INC_SPEED = pygame.USEREVENT + 1
 pygame.time.set_timer(INC_SPEED, 1000)
 
-# Coin spawn event
+# появлен е монет
 COIN_SPAWN = pygame.USEREVENT + 2
-pygame.time.set_timer(COIN_SPAWN, 2000)  # Spawn coin every 2 seconds
+pygame.time.set_timer(COIN_SPAWN, 2000)  # пояаляются каждые 2 секунды
  
 #основной цикл
 while True:
-    #Cycles through all events occurring  
     for event in pygame.event.get():
         if event.type == INC_SPEED:
             SPEED += 0.5     
@@ -140,34 +139,34 @@ while True:
     coins_text = font_small.render(f"Coins: {COINS_COLLECTED}", True, BLACK)
     DISPLAYSURF.blit(coins_text, (300,10))
  
-    #Moves and Re-draws all Sprites
+    #движение и перерисовка обьектоов
     for entity in all_sprites:
         DISPLAYSURF.blit(entity.image, entity.rect)
         entity.move()
  
-    # Check collision with coins
+    # проверка стллкновения с монетками
     coins_collected = pygame.sprite.spritecollide(P1, coins, True)
     for coin in coins_collected:
         COINS_COLLECTED += 1
-        # Remove coin from all_sprites group
+        # удаление при столкновении
         all_sprites.remove(coin)
  
-    #To be run if collision occurs between Player and Enemy
+    #столкновение с противположными машиканми
     if pygame.sprite.spritecollideany(P1, enemies):
-        crash_sound.play()  # ВОТ ЗДЕСЬ ЗВУК АВАРИИ!
+        crash_sound.play()  # АВАРИЯЯЯ БАБАААХ
         time.sleep(0.5)
                     
-        DISPLAYSURF.fill(RED)
-        DISPLAYSURF.blit(game_over, (30,250))
+        DISPLAYSURF.fill(RED) #красный фрейм
+        DISPLAYSURF.blit(game_over, (30,250)) #его размер
         final_score = font_small.render(f"Score: {SCORE}", True, WHITE)
         final_coins = font_small.render(f"Coins: {COINS_COLLECTED}", True, YELLOW)
         DISPLAYSURF.blit(final_score, (150, 350))
         DISPLAYSURF.blit(final_coins, (150, 380))
            
-        pygame.display.update()
+        pygame.display.update() #обновка
         for entity in all_sprites:
             entity.kill() 
-        time.sleep(2)
+        time.sleep(2) # закрывается через 2 секунды
         pygame.quit()
         sys.exit()        
          

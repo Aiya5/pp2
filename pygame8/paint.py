@@ -1,12 +1,11 @@
 import pygame
-
 pygame.init()
 
 # размеры окна
 width = 800
 height = 600
 
-# цвета
+# цветааааааа
 black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
@@ -15,9 +14,9 @@ blue = (0, 0, 255)
 yellow = (255, 255, 0)
 purple = (255, 0, 255)
 
-# создаем окно
+# создаем окошкооо
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Мой рисовалка")
+pygame.display.set_caption("Пэйнт на минималках")
 
 # переменные для рисования
 risuem = False
@@ -58,7 +57,7 @@ start_pos = None
 current_figura = None
 
 def risovat_interface():
-    """Рисуем панель инструментов"""
+    #Рисуем панель инструментов
     # рисуем палитру цветов
     for tsvet in tsveta:
         pygame.draw.rect(screen, tsvet["color"], tsvet["rect"])
@@ -80,13 +79,13 @@ def risovat_interface():
     pygame.draw.rect(screen, black, (750, 10, 30, 30), 1)
 
 def risovat_kistyu(pos):
-    """Рисуем кистью"""
+    #Рисуем кистью
     if last_pos:
         pygame.draw.line(holst, current_color, last_pos, pos, razmer_kisti)
     return pos
 
 def risovat_kvadrat(start, end):
-    """Рисуем квадрат/прямоугольник"""
+    #Рисуем квадрат/прямоугольник
     temp_poverhnost.fill((0, 0, 0, 0))  # очищаем временную поверхность
     rect = pygame.Rect(
         min(start[0], end[0]),
@@ -98,7 +97,7 @@ def risovat_kvadrat(start, end):
     return rect
 
 def risovat_krug(start, end):
-    """Рисуем круг"""
+    #Рисуем круг
     temp_poverhnost.fill((0, 0, 0, 0))  # очищаем временную поверхность
     center_x = (start[0] + end[0]) // 2
     center_y = (start[1] + end[1]) // 2
@@ -107,13 +106,13 @@ def risovat_krug(start, end):
     return (center_x, center_y, radius)
 
 def risovat_lastikom(pos):
-    """Стираем ластиком"""
+   #Стираем ластиком
     if last_pos:
         pygame.draw.line(holst, white, last_pos, pos, razmer_kisti * 2)
     return pos
 
 def ochistit_holst():
-    """Очищаем весь холст"""
+    #Очищаем весь холст
     holst.fill(white)
     temp_poverhnost.fill((0, 0, 0, 0))
 
