@@ -6,7 +6,6 @@ pygame.init()
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
-# --- COLORS ---
 BLUE  = (0, 0, 255)
 RED   = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -14,13 +13,12 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW= (255, 255, 0)
 
-# --- GAME SETTINGS ---
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5                # скорость врага
 SCORE = 0
 COINS_COLLECTED = 0
-N = 5  # ⬅ NEW: каждые N монет скорость врага растёт
+N = 5  # каждые N монет скорость врага растёт
 
 # MUSIC
 pygame.mixer.music.load("tokyo.mp3")
@@ -32,7 +30,7 @@ crash_sound = pygame.mixer.Sound("crash.mp3")
 # TEXT
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
-coin_font = pygame.font.SysFont("Verdana", 16)   # ⬅ NEW: цифра на монетке
+coin_font = pygame.font.SysFont("Verdana", 16)   # цифра на монетке
 game_over = font.render("Game Over", True, BLACK)
 
 background = pygame.image.load("animatedstreet.png")
@@ -40,9 +38,7 @@ background = pygame.image.load("animatedstreet.png")
 DISPLAYSURF = pygame.display.set_mode((400,600))
 pygame.display.set_caption("Game")
  
-# ========================================================
 # ENEMY CLASS
-# ========================================================
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -59,9 +55,7 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.top = 0
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
 
-# ========================================================
 # COIN CLASS (random weight)
-# ========================================================
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -84,9 +78,6 @@ class Coin(pygame.sprite.Sprite):
             self.rect.top = 0
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
 
-# ========================================================
-# PLAYER
-# ========================================================
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
@@ -105,10 +96,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.move_ip(-5, 0)
         if pressed_keys[K_RIGHT] and self.rect.right < SCREEN_WIDTH:
             self.rect.move_ip(5, 0)
-
-# ========================================================
-# CREATE OBJECTS
-# ========================================================
+            
 P1 = Player()
 E1 = Enemy()
 C1 = Coin()
@@ -128,10 +116,7 @@ pygame.time.set_timer(INC_SPEED, 1000)
 
 COIN_SPAWN = pygame.USEREVENT + 2
 pygame.time.set_timer(COIN_SPAWN, 2000)
- 
-# ========================================================
-# MAIN GAME LOOP
-# ========================================================
+
 while True:
     for event in pygame.event.get():
         if event.type == INC_SPEED:
@@ -146,11 +131,11 @@ while True:
  
     DISPLAYSURF.blit(background, (0,0))
 
-    # HUD: Score
+    #Score
     scores = font_small.render(str(SCORE), True, BLACK)
     DISPLAYSURF.blit(scores, (10,10))
 
-    # HUD: Coins
+    #Coins
     coins_text = font_small.render(f"Coins: {COINS_COLLECTED}", True, BLACK)
     DISPLAYSURF.blit(coins_text, (300,10))
  
@@ -159,21 +144,15 @@ while True:
         DISPLAYSURF.blit(entity.image, entity.rect)
         entity.move()
  
-    # ========================================================
-    # COIN COLLISION
-    # ========================================================
     collected = pygame.sprite.spritecollide(P1, coins, True)
     for coin in collected:
-        COINS_COLLECTED += coin.weight    # ⬅ NEW: прибавляем вес монетки
+        COINS_COLLECTED += coin.weight    # прибавляем вес монетки
         all_sprites.remove(coin)
 
-        # ⬅ NEW: ускоряем врага после N монет
+        #ускоряем врага после N монет
         if COINS_COLLECTED % N == 0:
             SPEED += 1
 
-    # ========================================================
-    # ENEMY COLLISION → GAME OVER
-    # ========================================================
     if pygame.sprite.spritecollideany(P1, enemies):
         crash_sound.play()
         time.sleep(0.5)

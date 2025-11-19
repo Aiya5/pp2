@@ -37,7 +37,7 @@ fruit_position = [random.randrange(1, (x // 10)) * 10,
                   random.randrange(1, (y // 10)) * 10] # а вот и рандомное позиция яблочки
 fruit_spawn = True #появление существование яблочко тру
 
-# --- ДОБАВЛЕНО: разные веса фруктов + таймер исчезновения ---
+# разные веса фруктов + таймер исчезновения 
 fruit_weight = random.choice([5, 10, 15, 20])  # вес фруктов случайный
 fruit_timer = time.time()  # время появления фрукта
 fruit_lifetime = random.randint(3, 7)  # фрукт живет от 3 до 7 секунд
@@ -103,14 +103,14 @@ while True : #основной цикл
     #удлинение тела змейки
     snake_body.insert(0, list(snake_position))
     
-    # --- ДОБАВЛЕНО: фрукт исчезает сам спустя время ---
+    # фрукт исчезает сам спустя время ---
     if time.time() - fruit_timer > fruit_lifetime:
         fruit_spawn = False
     # -----------------------------------------------
     
     # змейка съела яблочко или нет проверяет
     if snake_position[0] == fruit_position[0] and snake_position[1] == fruit_position[1]:
-        score += fruit_weight  # ДОБАВЛЕНО: поинты = вес фрукта
+        score += fruit_weight  #поинты = вес фрукта
         fruit_spawn = False  # фрукт исчезает
     else:
         snake_body.pop() #удаляет хвост если змейка не съела яблочко
