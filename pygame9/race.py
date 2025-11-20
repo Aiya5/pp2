@@ -5,29 +5,28 @@ import random, time
 pygame.init()
 FPS = 60
 FramePerSec = pygame.time.Clock()
-
+#цветаааа
 BLUE  = (0, 0, 255)
 RED   = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW= (255, 255, 0)
-
+#параметрыыы экрана скорости и тд
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
-SPEED = 5                # скорость врага
+SPEED = 5  # скорость врага
 SCORE = 0
 COINS_COLLECTED = 0
 N = 5  # каждые N монет скорость врага растёт
 
-# MUSIC
+#муызкальное сопроваждениеее
 pygame.mixer.music.load("tokyo.mp3")
-pygame.mixer.music.play(-1)
+pygame.mixer.music.play(-1) 
 pygame.mixer.music.set_volume(0.5)
-
 crash_sound = pygame.mixer.Sound("crash.mp3")
 
-# TEXT
+#все сввязанное с текстом и их параметры
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
 coin_font = pygame.font.SysFont("Verdana", 16)   # цифра на монетке
@@ -38,7 +37,7 @@ background = pygame.image.load("animatedstreet.png")
 DISPLAYSURF = pygame.display.set_mode((400,600))
 pygame.display.set_caption("Game")
  
-# ENEMY CLASS
+#все связанное с машинками врагами
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -55,20 +54,17 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.top = 0
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
 
-# COIN CLASS (random weight)
+#монеточки которые весят по разному
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.weight = random.randint(1, 5)  # ⬅ NEW: монетка имеет вес 1–5
-
-        # рисуем монету
+        self.weight = random.randint(1, 5)  #монетка имеет вес 1–5
+        # рисуем монетку
         self.image = pygame.Surface((30, 30), pygame.SRCALPHA)
         pygame.draw.circle(self.image, YELLOW, (15, 15), 15)
-
-        # ⬅ NEW: пишем число веса на монетке
+        #ишем число веса на монетке
         text = coin_font.render(str(self.weight), True, BLACK)
         self.image.blit(text, (10, 7))
-
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
         
@@ -77,7 +73,7 @@ class Coin(pygame.sprite.Sprite):
         if self.rect.top > 600:
             self.rect.top = 0
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
-
+#основное мы и наша машинка
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
@@ -85,7 +81,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (40, 80))
         self.rect = self.image.get_rect()
         self.rect.center = (160, 520)
-        
+        #его движение
     def move(self):
         pressed_keys = pygame.key.get_pressed()
         if pressed_keys[K_UP]:
@@ -110,7 +106,7 @@ coins.add(C1)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1, E1, C1)
 
-# EVENT TIMERS
+# тааймеры
 INC_SPEED = pygame.USEREVENT + 1
 pygame.time.set_timer(INC_SPEED, 1000)
 
@@ -131,15 +127,13 @@ while True:
  
     DISPLAYSURF.blit(background, (0,0))
 
-    #Score
+    #очкиии
     scores = font_small.render(str(SCORE), True, BLACK)
     DISPLAYSURF.blit(scores, (10,10))
-
-    #Coins
+    #монетки
     coins_text = font_small.render(f"Coins: {COINS_COLLECTED}", True, BLACK)
     DISPLAYSURF.blit(coins_text, (300,10))
- 
-    # Update & draw objects
+    # обновка экрана
     for entity in all_sprites:
         DISPLAYSURF.blit(entity.image, entity.rect)
         entity.move()

@@ -28,14 +28,14 @@ def main():
                     return
                 if event.key == pygame.K_ESCAPE:
                     return
-                # смена цвета
+                #выбиарем цвеет
                 if event.key == pygame.K_r:
                     mode = 'red'
                 elif event.key == pygame.K_g:
                     mode = 'green'
                 elif event.key == pygame.K_b:
                     mode = 'blue'
-                # выбор формы
+                # выбираем формыы для рисования
                 elif event.key == pygame.K_1:  # квадрат/прямоугольник
                     drawing_shape = 'rectangle'
                 elif event.key == pygame.K_2:  # круг
@@ -137,7 +137,7 @@ def main():
             elif shape[0] == 'square':
                 pygame.draw.rect(screen, shape[3], shape[1], width=shape[2])
             elif shape[0] == 'circle':
-                pygame.draw.circle(screen, shape[3], shape[1], shape[2], width=shape[3] if len(shape) < 5 else shape[4])
+                pygame.draw.circle(screen, shape[4], shape[1], shape[2], width=shape[3])
             elif shape[0] == 'brush':
                 if len(shape[1]) > 1:
                     for i in range(len(shape[1])-1):
@@ -147,7 +147,7 @@ def main():
             elif shape[0] == 'polygon':
                 pygame.draw.polygon(screen, shape[3], shape[1], width=shape[2])
         
-        # live drawing preview
+        #кисточка
         if drawing_shape == 'brush' and len(brush_points) > 1:
             for i in range(len(brush_points)-1):
                 pygame.draw.line(screen, current_color, brush_points[i], brush_points[i+1], radius)

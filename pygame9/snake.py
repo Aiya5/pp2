@@ -41,7 +41,6 @@ fruit_spawn = True #появление существование яблочко
 fruit_weight = random.choice([5, 10, 15, 20])  # вес фруктов случайный
 fruit_timer = time.time()  # время появления фрукта
 fruit_lifetime = random.randint(3, 7)  # фрукт живет от 3 до 7 секунд
-# -------------------------------------------------------------
 
 direction = 'RIGHT'
 change_to = direction
@@ -49,7 +48,7 @@ score = 0 #поинты
 level = 1 #начинается с перовго уровня
 last_level_up = 0
 
-# Show score and level
+#показатель уровняя и поинтов
 def show_info(color, font, size):
     info_font = pygame.font.SysFont(font, size)#размер и вид текста
     info_surface = info_font.render(f"Score: {score}  Level: {level}", True, color)#текст и поинты которые меняются
@@ -103,10 +102,9 @@ while True : #основной цикл
     #удлинение тела змейки
     snake_body.insert(0, list(snake_position))
     
-    # фрукт исчезает сам спустя время ---
+    # фрукт исчезает сам спустя время 
     if time.time() - fruit_timer > fruit_lifetime:
         fruit_spawn = False
-    # -----------------------------------------------
     
     # змейка съела яблочко или нет проверяет
     if snake_position[0] == fruit_position[0] and snake_position[1] == fruit_position[1]:
