@@ -17,7 +17,7 @@ def main():
         alt_held = pressed[pygame.K_LALT] or pressed[pygame.K_RALT]
         ctrl_held = pressed[pygame.K_LCTRL] or pressed[pygame.K_RCTRL]
         
-        # события нажатия клавиш
+        # нажиаем на клавиши
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
