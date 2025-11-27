@@ -58,7 +58,7 @@ def save_score(user_id, score):
                         VALUES (%s, %s);
                     """, (user_id, score))
                     conn.commit()
-                    print(f"First score saved → {score}")
+                    print(f"First score saved: {score}")
                     return
 
                 current_id, current_high = row
@@ -80,7 +80,7 @@ def save_score(user_id, score):
                 """, (user_id, score))
 
                 conn.commit()
-                print(f"New HIGH SCORE → {score}")
+                print(f"New HIGH SCORE : {score}")
 
     except Exception as e:
         print("SAVE ERROR:", e)
@@ -226,7 +226,7 @@ while True:
 
     snake_body.insert(0, list(snake_position))
 
-    # fruit lifetime
+    # время фруктов
     if time.time() - fruit_timer > fruit_lifetime:
         fruit_spawn = False
 

@@ -61,7 +61,7 @@ def update_contact():
 
 # фильтруем данные
 def query_contacts():
-    filter_by = input("Filter by first name, last name, or phone? (name/last/phone/all): ").strip().lower()
+    filter_by = input("Filter by first name, or phone? (name/last/phone/all): ").strip().lower()
     if filter_by == "name":
         val = input("Enter first name: ")
         sql = "SELECT * FROM contacts WHERE first_name=%s;"

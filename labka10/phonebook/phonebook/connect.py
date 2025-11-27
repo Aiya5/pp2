@@ -4,7 +4,7 @@ from config import load_config
 def connect(config):
     """ Connect to the PostgreSQL database server """
     try:
-        #связываем с PostgreSQL server потому что с другими нельяз апайка скаазала
+        #связываем с PostgreSQL server потому что с другими нельяз апайка скаазfkff
         with psycopg2.connect(**config) as conn:
             print('Connected to the PostgreSQL server.')
             return conn

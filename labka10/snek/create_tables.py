@@ -24,7 +24,7 @@ def create_tables():
         config = load_config()
         with psycopg2.connect(**config) as conn:
             with conn.cursor() as cur:
-                # execute the CREATE TABLE statement
+                # запускаем и создаем таблицу
                 for command in commands:
                     cur.execute(command)
     except (psycopg2.DatabaseError, Exception) as error:
