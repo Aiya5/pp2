@@ -1,61 +1,46 @@
 import pygame
+import random
+import time
+
 pygame.init()
 
+# --- SETTINGS ---
 WIDTH, HEIGHT = 700, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Coin Drop Game")
+pygame.display.set_caption("Triangle Color Change + Collision")
 clock = pygame.time.Clock()
 FPS = 60
 
+# COLORS
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GOLD = (255, 215, 0)
-BLUE = (50, 50, 255)
+BLUE = (0, 120, 255)
+ORIGINAL_COLOR = (255, 100, 0)
+CHANGED_COLOR = (0, 255, 0)
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((120, 120))
-        self.image.fill(BLUE)
-        self.rect = self.image.get_rect(midtop=(WIDTH // 2, 20))
-        self.speed = 15
+# PLAYER RECTANGLE
+player_w, player_h = 120, 20
+player_x = WIDTH // 2 - player_w // 2
+player_y = HEIGHT - 60
+player_speed = 7
 
-    def update(self, keys):
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.rect.y -= self.speed
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.rect.y += self.speed
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.rect.x -= self.speed
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.rect.x += self.speed
-            
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > HEIGHT:
-            self.rect.right = HEIGHT
+# TRIANGLE DATA
+triangle_color = ORIGINAL_COLOR
+last_color_change = time.time()
 
-class Coin(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.radius = 10
-        self.image = pygame.Surface((20, 20), pygame.SRCALPHA)
-        pygame.draw.circle(self.image, GOLD, (10, 10), self.radius)
-        self.rect = self.image.get_rect(center=(x, y))
-        self.speed = 5
+def generate_triangle():
+    x = random.randint(100, WIDTH - 100)
+    y = random.randint(100, HEIGHT - 300)
+    size = 60
+    return [(x, y), (x - size, y + size), (x + size, y + size)]
 
-    def update(self):
-        self.rect.y += self.speed
+triangle_points = generate_triangle()
 
-player = Player()
-all_sprites = pygame.sprite.Group(player)
-coins = pygame.sprite.Group()
+def rect_triangle_collision(rect, triangle):
+    for (tx, ty) in triangle:
+        if rect.collidepoint(tx, ty):
+            return True
+    return False
 
-score = 0
 running = True
 
 while running:
@@ -63,29 +48,26 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # Create a coin when pressing SPACE
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                coin = Coin(player.rect.centerx, player.rect.bottom + 5)
-                coins.add(coin)
-                all_sprites.add(coin)
-
     keys = pygame.key.get_pressed()
-    player.update(keys)
-    coins.update()
+    if keys[pygame.K_LEFT]:
+        player_x -= player_speed
+    if keys[pygame.K_RIGHT]:
+        player_x += player_speed
 
-    # Check if any coin reached the floor
-    for coin in list(coins):
-        if coin.rect.bottom >= HEIGHT:
-            score += 1
-            coin.kill()  
+    player_x = max(0, min(WIDTH - player_w, player_x))
+    player_rect = pygame.Rect(player_x, player_y, player_w, player_h)
 
+    if time.time() - last_color_change >= 2:
+        triangle_color = CHANGED_COLOR
+        last_color_change = time.time()
+
+    if rect_triangle_collision(player_rect, triangle_points):
+        triangle_color = ORIGINAL_COLOR
     screen.fill(WHITE)
-    all_sprites.draw(screen)
 
-    font = pygame.font.SysFont(None, 40)
-    score_text = font.render(f"Coins Collected: {score}", True, BLACK)
-    screen.blit(score_text, (20, 20))
+    # Draw triangle
+    pygame.draw.polygon(screen, triangle_color, triangle_points)
+    pygame.draw.rect(screen, BLUE, player_rect)
 
     pygame.display.flip()
     clock.tick(FPS)

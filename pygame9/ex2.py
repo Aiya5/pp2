@@ -3,7 +3,6 @@ import random
 
 pygame.init()
 
-# --- SCREEN SETTINGS ---
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 700
 FPS = 60
@@ -12,18 +11,15 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Ball vs Rectangles")
 clock = pygame.time.Clock()
 
-# --- COLORS ---
 WHITE = (255, 255, 255)
 RED = (219, 7, 1)
 BLACK = (0, 0, 0)
 
-# ------------------- PLAYER SPRITE -------------------
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.radius = 25
 
-        # Create a surface for the ball
         self.image = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
         pygame.draw.circle(self.image, RED, (self.radius, self.radius), self.radius)
 
