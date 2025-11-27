@@ -6,7 +6,7 @@ from config import load_config
 
 config = load_config()
 
-def get_or_create_user(username):
+def create_user(username):
     try:
         with psycopg2.connect(**config) as conn:
             with conn.cursor() as cur:
@@ -15,7 +15,7 @@ def get_or_create_user(username):
 
                 if row:
                     user_id = row[0]
-                    print(f"Welcome back, {username}!")
+                    print(f"Welcome back, {username}, baby!")
 
                     # псоледний резульати
                     cur.execute("""SELECT score FROM user_score 
@@ -30,7 +30,7 @@ def get_or_create_user(username):
                 cur.execute('INSERT INTO "user"(username) VALUES(%s) RETURNING id;', (username,))
                 user_id = cur.fetchone()[0]
                 conn.commit()
-                print("New user created:", username)
+                print("New user:", username)
                 return user_id
     except Exception as e:
         print("DB ERROR:", e)
@@ -80,16 +80,15 @@ def save_score(user_id, score):
                 """, (user_id, score))
 
                 conn.commit()
-                print(f"New HIGH SCORE : {score}")
+                print(f"New HIGHEST score : {score}")
 
     except Exception as e:
-        print("SAVE ERROR:", e)
+        print("save ERROR:", e)
 
 
 #Запршивает имя человечка чтобы запсиать его в таблицу
-username = input("Enter your username: ")
-user_id = get_or_create_user(username)
-
+username = input("Enter username: ")
+user_id = create_user(username)
 #мой игровой код
 # параметры окна
 x = 720
@@ -195,14 +194,14 @@ while True:
                     change_to = 'RIGHT'
 
     if paused:
-    # Draw PAUSED text instead of freezing the screen
+    # рисует вместо заморозки
        game_window.fill(black)
        pause_font = pygame.font.SysFont('times new roman', 50)
        pause_surface = pause_font.render("PAUSED", True, white)
        pause_rect = pause_surface.get_rect(center=(x // 2, y // 2))
        game_window.blit(pause_surface, pause_rect)
        pygame.display.update()
-       fps.tick(5)  # slow refresh while paused
+       fps.tick(5)  #обновляет через 5сек
        continue
 
     if change_to == 'UP' and direction != 'DOWN':

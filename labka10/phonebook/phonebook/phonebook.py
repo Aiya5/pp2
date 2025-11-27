@@ -5,14 +5,14 @@ from config import load_config
 config = load_config()
 
 #вводим данные
-def insert_contact_console():
-    first_name = input("Enter first name: ")
+def insert_contact_console():  
+    first_name = input("Enter name: ")
     phone = input("Enter phone: ")
-    sql = "INSERT INTO contacts(first_name,phone) VALUES (%s,%s) RETURNING id;"
+    sql = "INSERT INTO contacts(first_name, phone) VALUES (%s,%s) RETURNING id;"
     try:
         with psycopg2.connect(**config) as conn:
             with conn.cursor() as cur:
-                cur.execute(sql, (first_name, phone))
+                cur.execute(sql, ( first_name, phone))
                 contact_id = cur.fetchone()[0]
                 conn.commit()
                 print(f"Inserted contact with id {contact_id}")
@@ -24,9 +24,9 @@ def insert_contacts_csv(file_path):
     try:
         with open(file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
-            next(reader)  # skip header
+            next(reader)  
             data = [tuple(row) for row in reader]
-        sql = "INSERT INTO contacts(first_name,phone) VALUES (%s,%s);"
+        sql = "INSERT INTO contacts(first_name, phone) VALUES (%s,%s);"
         with psycopg2.connect(**config) as conn:
             with conn.cursor() as cur:
                 cur.executemany(sql, data)
@@ -37,10 +37,10 @@ def insert_contacts_csv(file_path):
 
 # обноваляем все данные
 def update_contact():
-    phone = input("Enter the phone of contact to update: ")
-    choice = input("Update first name or phone? (name/phone): ").strip().lower()
+    phone = input("Enter phone of to update: ")
+    choice = input("Update name or phone?: ").strip().lower()
     if choice == "name":
-        new_name = input("Enter new first name: ")
+        new_name = input("Enter new  name: ")
         sql = "UPDATE contacts SET first_name=%s WHERE phone=%s;"
         params = (new_name, phone)
     elif choice == "phone":
@@ -61,9 +61,9 @@ def update_contact():
 
 # фильтруем данные
 def query_contacts():
-    filter_by = input("Filter by first name, or phone? (name/last/phone/all): ").strip().lower()
+    filter_by = input("Filter name or phone? (name/phone/all): ").strip().lower()
     if filter_by == "name":
-        val = input("Enter first name: ")
+        val = input("Enter name: ")
         sql = "SELECT * FROM contacts WHERE first_name=%s;"
         params = (val,)
     elif filter_by == "phone":
@@ -85,9 +85,9 @@ def query_contacts():
 
 # удаляем данные
 def delete_contact():
-    choice = input("Delete by first name or phone? (name/phone): ").strip().lower()
+    choice = input("Delete by name or phone? (name/phone): ").strip().lower()
     if choice == "name":
-        val = input("Enter first name: ")
+        val = input("Enter name: ")
         sql = "DELETE FROM contacts WHERE first_name=%s;"
     elif choice == "phone":
         val = input("Enter phone: ")
