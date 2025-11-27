@@ -195,7 +195,16 @@ while True:
                     change_to = 'RIGHT'
 
     if paused:
-        continue  # пропускает
+    # Draw PAUSED text instead of freezing the screen
+       game_window.fill(black)
+       pause_font = pygame.font.SysFont('times new roman', 50)
+       pause_surface = pause_font.render("PAUSED", True, white)
+       pause_rect = pause_surface.get_rect(center=(x // 2, y // 2))
+       game_window.blit(pause_surface, pause_rect)
+       pygame.display.update()
+       fps.tick(5)  # slow refresh while paused
+       continue
+
     if change_to == 'UP' and direction != 'DOWN':
         direction = 'UP'
     if change_to == 'DOWN' and direction != 'UP':

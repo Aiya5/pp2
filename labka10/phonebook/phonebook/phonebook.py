@@ -7,14 +7,12 @@ config = load_config()
 #вводим данные
 def insert_contact_console():
     first_name = input("Enter first name: ")
-    last_name = input("Enter last name: ")
     phone = input("Enter phone: ")
-    email = input("Enter email: ")
-    sql = "INSERT INTO contacts(first_name, last_name, phone, email) VALUES (%s,%s,%s,%s) RETURNING id;"
+    sql = "INSERT INTO contacts(first_name,phone) VALUES (%s,%s) RETURNING id;"
     try:
         with psycopg2.connect(**config) as conn:
             with conn.cursor() as cur:
-                cur.execute(sql, (first_name, last_name, phone, email))
+                cur.execute(sql, (first_name, phone))
                 contact_id = cur.fetchone()[0]
                 conn.commit()
                 print(f"Inserted contact with id {contact_id}")
@@ -28,7 +26,7 @@ def insert_contacts_csv(file_path):
             reader = csv.reader(csvfile)
             next(reader)  # skip header
             data = [tuple(row) for row in reader]
-        sql = "INSERT INTO contacts(first_name,last_name,phone,email) VALUES (%s,%s,%s,%s);"
+        sql = "INSERT INTO contacts(first_name,phone) VALUES (%s,%s);"
         with psycopg2.connect(**config) as conn:
             with conn.cursor() as cur:
                 cur.executemany(sql, data)
@@ -67,10 +65,6 @@ def query_contacts():
     if filter_by == "name":
         val = input("Enter first name: ")
         sql = "SELECT * FROM contacts WHERE first_name=%s;"
-        params = (val,)
-    elif filter_by == "last":
-        val = input("Enter last name: ")
-        sql = "SELECT * FROM contacts WHERE last_name=%s;"
         params = (val,)
     elif filter_by == "phone":
         val = input("Enter phone: ")
